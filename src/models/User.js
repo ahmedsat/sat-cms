@@ -1,10 +1,10 @@
 import { Schema, model } from "mongoose";
-import { hashPassword } from "../utils/password";
-import { sign } from "jsonwebtoken";
+import { hashPassword } from "../utils/password.js";
+import jwt from "jsonwebtoken";
 
 const UserSchema = new Schema(
   {
-    name: {
+    username: {
       type: String,
       required: [true, "Name is required"],
       minlength: 3,
@@ -47,19 +47,19 @@ const UserSchema = new Schema(
   { timestamps: true }
 );
 
-UserSchema.pre("save", async () => {
+UserSchema.pre("save", async function () {
   this.password = await hashPassword(this.password);
 });
 
-UserSchema.methods.CreateJWT = () => {
-  const token = sign(
+UserSchema.methods.CreateJWT = function () {
+  const token = jwt.sign(
     { id: this._id, name: this.name },
     process.env.JWT_SECRET,
     {
-      expiresIn: this.loginExpires,
+      expiresIn: "8h",
     }
   );
   return token;
 };
 
-module.exports = model("User", UserSchema);
+export const User = model("User", UserSchema);
