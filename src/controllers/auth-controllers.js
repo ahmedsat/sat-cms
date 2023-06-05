@@ -2,7 +2,6 @@ import { StatusCodes } from "http-status-codes";
 import { User } from "../models/User.js";
 
 export const register = async (req, res) => {
-  console.log("register");
   const user = await User.create({ ...req.body });
   const token = user.CreateJWT();
   res.status(StatusCodes.CREATED).json({
