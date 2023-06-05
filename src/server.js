@@ -1,8 +1,10 @@
 import { config } from "dotenv"; // to load .env file
 import express from "express";
+import "express-async-errors";
 import { test } from "./middleware/test.js";
 import { connectDB } from "./database/connect.js";
 import { authRouter } from "./routes/auth-routes.js";
+import { ErrorHandler } from "./middleware/error-handler.js";
 
 config(); // load .env file
 
@@ -19,6 +21,8 @@ app.post("/", test, (req, res) => {
 });
 
 app.use("/api/v1", authRouter);
+
+app.use(ErrorHandler);
 
 connectDB()
   .then(() => {
