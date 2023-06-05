@@ -4,24 +4,31 @@ import jwt from "jsonwebtoken";
 
 const UserSchema = new Schema(
   {
+    name: {
+      type: String,
+      default: "User",
+      minlength: 4,
+      maxlength: 50,
+    },
     username: {
       type: String,
-      required: [true, "Name is required"],
+      required: [true, "Missing username field"],
       minlength: 3,
       maxlength: 255,
+      unique: true,
     },
     email: {
       type: String,
-      required: [true, "Email is required"],
+      required: [true, "Missing email field"],
       match: [
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-        "Please enter a valid email",
+        "Invalid email format",
       ],
       unique: true,
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
+      required: [true, "Missing password field"],
       minlength: 6,
     },
     role: {
