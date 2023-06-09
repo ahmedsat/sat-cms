@@ -1,6 +1,5 @@
 import { Schema, model } from "mongoose";
 import { hashPassword } from "../utils/password.js";
-import jwt from "jsonwebtoken";
 
 const UserSchema = new Schema(
   {
@@ -57,16 +56,5 @@ const UserSchema = new Schema(
 UserSchema.pre("save", async function () {
   this.password = await hashPassword(this.password);
 });
-
-UserSchema.methods.CreateJWT = function () {
-  const token = jwt.sign(
-    { id: this._id, name: this.name },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: "8h",
-    }
-  );
-  return token;
-};
 
 export const User = model("User", UserSchema);
