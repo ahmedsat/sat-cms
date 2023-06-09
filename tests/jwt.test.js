@@ -14,6 +14,7 @@ describe("JWT", () => {
 
   it("should validate JWT", () => {
     const decoded = VerifyJWT(token);
+    assert.isUndefined(decoded.error);
     assert.equal(decoded.id, user["_id"]);
     assert.equal(decoded.username, user["username"]);
   });

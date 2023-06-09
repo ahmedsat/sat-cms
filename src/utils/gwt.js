@@ -1,7 +1,7 @@
-import gwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 export const CreateJWT = (user) => {
-  const token = gwt.sign(
+  const token = jwt.sign(
     { id: user._id, username: user.username },
     process.env.JWT_SECRET,
     {
@@ -12,5 +12,10 @@ export const CreateJWT = (user) => {
 };
 
 export const VerifyJWT = (token) => {
-  return jwt.verify(token, process.env.JWT_SECRET);
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    return decoded;
+  } catch (error) {
+    return { error: error };
+  }
 };
