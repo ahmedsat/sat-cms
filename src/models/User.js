@@ -7,14 +7,14 @@ const UserSchema = new Schema(
     name: {
       type: String,
       default: "User",
-      minlength: 4,
-      maxlength: 50,
+      minlength: [4, "Must be at least 4, got {VALUE}"],
+      maxlength: [50, "Must be at least 50, got {VALUE}"],
     },
     username: {
       type: String,
       required: [true, "Missing username field"],
-      minlength: 3,
-      maxlength: 255,
+      minlength: [3, "Must be at least 3, got {VALUE}"],
+      maxlength: [255, "Must be at least 255, got {VALUE}"],
       unique: true,
     },
     email: {

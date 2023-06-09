@@ -70,7 +70,7 @@ describe("/api/v1/register", () => {
         expect(res).to.have.status(400);
         expect(res.body).to.have.property(
           "message",
-          "Name field is shorter than the minimum allowed length (6)"
+          "Must be at least 4, got " + user.name
         );
         done();
       });
@@ -94,19 +94,18 @@ describe("/api/v1/register", () => {
         );
         expect(res.body).to.have.property("id");
         expect(res.body).to.have.property("token");
-        done();
       });
 
     chai
       .request(app)
       .post("/api/v1/register")
-      .send(user)
+      .send(user2)
       .end((err, res) => {
         expect(err).to.be.null;
         expect(res).to.have.status(400);
         expect(res.body).to.have.property(
           "message",
-          "Username is already used"
+          "Duplicate value entered for username field, please choose another value"
         );
         done();
       });
