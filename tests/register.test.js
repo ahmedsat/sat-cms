@@ -2,6 +2,7 @@ import chai from "chai";
 import chaiHttp from "chai-http";
 import app from "../src/server.js";
 import { createRandomUser } from "./helpers/fake-user.js";
+import { StatusCodes } from "http-status-codes";
 
 chai.use(chaiHttp);
 const { expect } = chai;
@@ -16,7 +17,7 @@ describe("/api/v1/register", () => {
       .send(user)
       .end((err, res) => {
         expect(err).to.be.null;
-        expect(res).to.have.status(201);
+        expect(res).to.have.status(StatusCodes.CREATED);
         expect(res.body).to.have.property(
           "message",
           "User registered successfully"
@@ -36,7 +37,7 @@ describe("/api/v1/register", () => {
       .send(user)
       .end((err, res) => {
         expect(err).to.be.null;
-        expect(res).to.have.status(400);
+        expect(res).to.have.status(StatusCodes.BAD_REQUEST);
         expect(res.body).to.have.property("message", "Missing email field");
         done();
       });
@@ -52,7 +53,7 @@ describe("/api/v1/register", () => {
       .send(user)
       .end((err, res) => {
         expect(err).to.be.null;
-        expect(res).to.have.status(400);
+        expect(res).to.have.status(StatusCodes.BAD_REQUEST);
         expect(res.body).to.have.property("message", "Invalid email format");
         done();
       });
@@ -67,7 +68,7 @@ describe("/api/v1/register", () => {
       .send(user)
       .end((err, res) => {
         expect(err).to.be.null;
-        expect(res).to.have.status(400);
+        expect(res).to.have.status(StatusCodes.BAD_REQUEST);
         expect(res.body).to.have.property(
           "message",
           "Must be at least 4, got " + user.name
@@ -102,7 +103,7 @@ describe("/api/v1/register", () => {
       .send(user2)
       .end((err, res) => {
         expect(err).to.be.null;
-        expect(res).to.have.status(400);
+        expect(res).to.have.status(StatusCodes.BAD_REQUEST);
         expect(res.body).to.have.property(
           "message",
           "Duplicate value entered for username field, please choose another value"
