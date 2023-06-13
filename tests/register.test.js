@@ -3,11 +3,16 @@ import chaiHttp from "chai-http";
 import app from "../src/server.js";
 import { createRandomUser } from "./helpers/fake-user.js";
 import { StatusCodes } from "http-status-codes";
+import { handleShutdownGracefully } from "../src/utils/graceful-shutdown.js";
 
 chai.use(chaiHttp);
 const { expect } = chai;
 
 describe("/api/v1/register", () => {
+  after(() => {
+    handleShutdownGracefully(app);
+  });
+
   it("should register a new user", (done) => {
     const user = createRandomUser();
 
