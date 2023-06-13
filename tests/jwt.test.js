@@ -1,6 +1,8 @@
 import { assert } from "chai";
+import { config } from "dotenv"; // to load .env file
 import { CreateJWT, VerifyJWT } from "../src/utils/jwt.js";
 import { createRandomUser } from "./helpers/fake-user.js";
+config();
 
 describe("JWT", () => {
   const user = createRandomUser();
@@ -19,17 +21,17 @@ describe("JWT", () => {
     assert.equal(decoded.username, user["username"]);
   });
 
-  it("should return error massage : Signature verification failed", () => {
+  it("should return error massage : invalid signature", () => {
     const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InltSUQiLCJ1c2VybmFtZSI6IlJhY2hlbF9Nb2VuLUxlZG5lcjMiLCJpYXQiOjE2ODY2NjEzMDEsImV4cCI6MTY4NjY5MDEwMX0.qgr9NaaFD8CjEramidt3heOsyyQggD1zkBkmoecyvAY";
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InltSUQtbmV3IiwidXNlcm5hbWUiOiJMdXJhODYiLCJpYXQiOjE2ODY2OTcxMzF9.dfLW2PgVPGeJ5ZN0ChuJMTUImg6UrrnEXIKi5Sgyilc";
     const decoded = VerifyJWT(token);
-    console.log(decoded.error);
-    assert.equal(decoded.error, "Signature verification failed");
+    assert.equal(decoded.error, "invalid signature");
   });
 
-  // more tests to be added
-  //    Signature verification failed
-  //    Invalid algorithm
-  //    Expired token
-  //    Invalid issuer
+  it("should return error massage : jwt expired", () => {
+    const token =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InltSUQiLCJ1c2VybmFtZSI6IkpheWxhbjI4IiwiaWF0IjoxNjg2Njk4MDMxLCJleHAiOjE2ODY2OTgwMzJ9.2qGefyLP1xqwKM9VIxZqrNfrfJaoi07-aXu49jzCa7Y";
+    const decoded = VerifyJWT(token);
+    assert.equal(decoded.error, "jwt expired");
+  });
 });
