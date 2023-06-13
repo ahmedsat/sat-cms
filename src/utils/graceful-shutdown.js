@@ -1,15 +1,17 @@
 import { disconnect } from "mongoose";
+import { exit } from "node:process";
 
-export const handleShutdownGracefully = (app) => {
+export const handleShutdownGracefully = async (app) => {
   console.info("closing server gracefully...");
-  app.close(async () => {
-    console.info("server closed.");
-    await disconnect()
-      .catch((reason) => {
-        console.error(reason);
-      })
-      .then(() => {
-        console.info("database disconnected");
-      });
-  });
+
+  console.info("server closed.");
+  await disconnect()
+    .catch((reason) => {
+      console.error(reason);
+    })
+    .then(() => {
+      console.info("database disconnected");
+    });
+
+  exit(0);
 };
