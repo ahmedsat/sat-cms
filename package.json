@@ -7,9 +7,10 @@
   "scripts": {
     "start": "node ",
     "dev": "nodemon ",
+    "test": "mocha ",
+    "tests": "mocha tests/",
     "pub": "git push heroku master",
     "up": "heroku ps:scale web=1",
-    "test": "mocha tests/",
     "down": "heroku ps:scale web=0"
   },
   "repository": {
