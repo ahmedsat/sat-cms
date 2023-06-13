@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import { User } from "../models/User.js";
-import { CreateJWT } from "../utils/gwt.js";
+import { CreateJWT } from "../utils/jwt.js";
 
 export const register = async (req, res) => {
   const user = await User.create({ ...req.body });
