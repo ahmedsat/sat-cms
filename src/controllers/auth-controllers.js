@@ -49,3 +49,10 @@ export const login = async (req, res) => {
 
   res.json({ name: user.name, id: user._id, token: token });
 };
+
+export const me = (req, res) => {
+  const { user } = req;
+  res
+    .status(StatusCodes.OK)
+    .json({ username: user.username, name: user.name, id: user._id });
+};

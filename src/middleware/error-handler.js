@@ -19,12 +19,12 @@ export const ErrorHandler = (err, req, res, next) => {
     Error.message = `Duplicate value entered for ${Object.keys(
       err.keyValue
     )} field, please choose another value`;
-    Error.statusCode = 400;
+    Error.statusCode = StatusCodes.BAD_REQUEST;
   }
 
   if (err.name === "CastError") {
     Error.message = `No item found with id : ${err.value}`;
-    Error.statusCode = 404;
+    Error.statusCode = StatusCodes.NOT_FOUND;
   }
 
   return res.status(Error.statusCode).json({
